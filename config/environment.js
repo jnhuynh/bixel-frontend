@@ -8,7 +8,7 @@ module.exports = function(environment) {
   };
 
   if (environment === 'development') {
-
+    ENV.developmentWebSocketHost = "0.0.0.0:3000";
   }
 
   if (environment === 'production') {
