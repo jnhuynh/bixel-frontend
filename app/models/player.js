@@ -8,7 +8,11 @@ var Player = DS.Model.extend({
   y:     attr("number"),
 
   area:         belongsTo("area"),
-  spriteSheet:  belongsTo("spriteSheet")
+  spriteSheet:  belongsTo("sprite-sheet"),
+
+  // Used to signify what event the changes belong to so backend can act
+  // accordingly.
+  eventName: attr("string")
 });
 
 export default Player;

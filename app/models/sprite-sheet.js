@@ -3,11 +3,11 @@ var attr      = DS.attr,
     hasMany   = DS.hasMany;
 
 var SpriteSheet = DS.Model.extend({
-name:          attr("string"),
-src:           attr("string"),
-currentFrame:  attr("number"),
+  name:          attr("string"),
+  src:           attr("string"),
+  currentFrame:  attr("number"),
 
-player: belongsTo("player")
+  player: belongsTo("player")
 });
 
 export default SpriteSheet;
