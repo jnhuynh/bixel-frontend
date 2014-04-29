@@ -1,7 +1,12 @@
 <form role="form">
   <div class="form-group">
     <label for="new-placeholder-name">Name</label>
-    <input type="text" class="form-control" id="new-player-name" placeholder="Enter a name">
+    {{input
+      type="text"
+      classNames="form-control"
+      id="new-player-name"
+      placeholder="Enter a name"
+      value=name}}
   </div>
 
   <button type="submit" class="btn btn-primary" {{action "createPlayerJoinArea"}}>
