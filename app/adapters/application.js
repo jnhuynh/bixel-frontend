@@ -20,22 +20,25 @@ var ApplicationAdapter = DS.Adapter.extend({
     return uri;
   }.property(),
 
-  message: function(event) {
-    var adapter = this,
-        result = JSON.parse(event.data);
+  onmessageHandler: function() {
+    var adapter   = this;
 
-    adapter.callbacks[result.uuid].success(result.payload);
-    delete adapter.callbacks[result.uuid];
-  },
+    return function(event) {
+      var callbacks = adapter.get("callbacks"),
+          payload   = JSON.parse(event.data),
+          callback  = callbacks[payload.uuid];
+
+      callback.success(payload);
+      delete callbacks[payload.uuid];
+    };
+  }.property(),
 
   init: function() {
     var adapter      = this,
         webSocketUri = adapter.get("webSocketUri"),
         webSocket    = new WebSocket(webSocketUri);
 
-    webSocket.onmessage = function(event) {
-      debugger;
-    };
+    webSocket.onmessage = adapter.get("onmessageHandler");
 
     this.set("webSocket", webSocket);
   },
@@ -54,7 +57,7 @@ var ApplicationAdapter = DS.Adapter.extend({
     });
   },
 
-  send: function(params) {
+  send: function(payload) {
     var adapter = this;
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -66,17 +69,15 @@ var ApplicationAdapter = DS.Adapter.extend({
         Ember.run(null, reject, json);
       };
 
-      var uuid = adapter.generateUuid();
-      var payload = {
-        uuid:    uuid,
-        params:  params
-      };
+      var uuid     = adapter.generateUuid();
+      payload.uuid = uuid;
 
       var callback = {
         success: success,
         error: error
       };
 
+      // Set callback so when websocket responds, we can resolve this callback.
       adapter.get("callbacks")[uuid] = callback;
 
       adapter.get("webSocket").send(JSON.stringify(payload));
@@ -85,12 +86,20 @@ var ApplicationAdapter = DS.Adapter.extend({
 
   createRecord: function(store, type, record) {
     console.log("ApplicationAdapter#createRecord");
-    return this.send();
+    var key     = record.constructor.typeKey,
+        payload = {},
+        eventName;
+
+    payload[key]          = this.serialize(record);
+    payload["event_name"] = payload[key].eventName;
+    delete payload[key].eventName;
+
+    return this.send(payload);
   },
 
-  updateRecord: function() {
+  updateRecord: function(store, type, record) {
     console.log("ApplicationAdapter#updateRecord");
-    return this.send();
+    return this.createRecord(store, type, record);
   }
 });
 
