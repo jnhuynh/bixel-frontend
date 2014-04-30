@@ -4,7 +4,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.resource("players", function() {
+  this.resource("player", function() {
     this.route("new");
   });
 
