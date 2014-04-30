@@ -14,6 +14,7 @@ var PlayerNewRoute = Ember.Route.extend({
 
       model.set("eventName", "player/create");
       model.save().then(function() {
+        this.transitionTo("area");
       }.bind(this));
     }
   }

@@ -9,7 +9,6 @@ Router.map(function() {
   });
 
   this.resource("area", function() {
-    this.route("index");
   });
 
   this.route("play");
