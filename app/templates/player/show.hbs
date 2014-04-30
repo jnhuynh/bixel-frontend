@@ -1,0 +1,10 @@
+<h1>Select an Area to Join</h1>
+
+{{#each area in areas}}
+  <div>
+  <button class="btn btn-primary" {{action selectArea area}}>
+    {{area.name}}
+  </button>
+  </div>
+{{/each}}
+

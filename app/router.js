@@ -10,12 +10,11 @@ Router.map(function() {
 
   this.resource("player", { path: "player/:player_id" }, function() {
     this.route("show");
+    this.route("play");
   });
 
   this.resource("areas", function() {
   });
-
-  this.route("play");
 });
 
 export default Router;
