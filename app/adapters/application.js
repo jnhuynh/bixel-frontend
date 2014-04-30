@@ -100,7 +100,19 @@ var ApplicationAdapter = DS.Adapter.extend({
 
   updateRecord: function(store, type, record) {
     console.log("ApplicationAdapter#updateRecord");
+
     return this.createRecord(store, type, record);
+  },
+
+  findAll: function(store, type, sinceToken) {
+    console.log("ApplicationAdapter#findAll");
+
+    var key        = type.typeKey,
+        payload    = {},
+        eventName  = key + "/index";
+
+    payload["event_name"] = eventName;
+    return this.send(payload);
   }
 });
 
