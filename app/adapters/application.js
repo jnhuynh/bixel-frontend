@@ -103,7 +103,7 @@ var ApplicationAdapter = DS.Adapter.extend({
       adapter.get("callbacks")[uuid] = callback;
 
       // Only send the payload if the web socket connection is open.
-      if (adapter.get("webSocket").readystate === 1) {
+      if (adapter.get("webSocket").readyState === 1) {
         adapter.get("webSocket").send(JSON.stringify(payload));
       } else {
         adapter.get("beforeOpenQueue").push(payload);
