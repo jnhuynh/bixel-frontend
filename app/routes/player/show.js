@@ -11,7 +11,7 @@ var PlayerShowRoute = Ember.Route.extend({
   },
 
   actions: {
-    selectArea: function(area) {
+    enterArea: function(area) {
       var player = this.controller.get("model");
 
       area.get("players").pushObject(player);
