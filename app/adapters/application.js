@@ -140,6 +140,20 @@ var ApplicationAdapter = DS.Adapter.extend({
 
     payload["event_name"] = eventName;
     return this.send(payload);
+  },
+
+  find: function(store, type, id) {
+    console.log("ApplicationAdapter#find");
+
+    var key        = type.typeKey,
+        payload    = {},
+        eventName  = key + "/show";
+
+    payload[key]          = {};
+    payload[key]["id"]    = id
+    payload["event_name"] = eventName;
+
+    return this.send(payload);
   }
 });
 
