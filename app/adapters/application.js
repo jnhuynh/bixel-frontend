@@ -37,9 +37,14 @@ var ApplicationAdapter = DS.Adapter.extend({
     switch (eventName) {
       case "area/player_enter":
         console.log("player_enter");
-        break;
       case "area/player_exit":
         console.log("player_exit");
+
+        type          = store.modelFor("area");
+        serializer    = store.serializerFor("area");
+        recordPayload = serializer.extractSingle(store, type, payload);
+
+        store.push(type, recordPayload);
         break;
       case "player/move":
         console.log("player_move");
