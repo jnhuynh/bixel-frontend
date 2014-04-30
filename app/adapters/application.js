@@ -4,6 +4,9 @@ var ApplicationAdapter = DS.Adapter.extend({
   // Hash of uuid to resolve responses from web socket.
   callbacks: {},
 
+  // Payloads that haven't been sent because the web socket wasn't open.
+  beforeOpenQueue: [],
+
   webSocket: null,
   webSocketUri: function() {
     var scheme   = "ws://",
@@ -20,7 +23,24 @@ var ApplicationAdapter = DS.Adapter.extend({
     return uri;
   }.property(),
 
-  onmessageHandler: function() {
+  onOpenHandler: function() {
+    var adapter   = this;
+
+    return function(event) {
+      // Web socket is open, we are safe to send the payloads.
+      var beforeOpenQueue = adapter.get("beforeOpenQueue");
+ 
+      if(adapter.beforeOpenQueue.length > 0) {
+        adapter.beforeOpenQueue.map(function(payload) {
+          adapter.get("webSocket").send(JSON.stringify(payload));
+        });
+
+        adapter.set("beforeOpenQueue", []);
+      }
+    };
+  },
+
+  onMessageHandler: function() {
     var adapter   = this;
 
     return function(event) {
@@ -38,13 +58,15 @@ var ApplicationAdapter = DS.Adapter.extend({
         webSocketUri = adapter.get("webSocketUri"),
         webSocket    = new WebSocket(webSocketUri);
 
-    webSocket.onmessage = adapter.get("onmessageHandler");
+    webSocket.onopen    = adapter.get("onOpenHandler");
+    webSocket.onmessage = adapter.get("onMessageHandler");
 
     this.set("webSocket", webSocket);
   },
 
   willDestroy: function() {
     this.get("webSocket").close();
+    this.set("webSocket", null);
   },
 
   generateUuid: function () {
@@ -80,7 +102,12 @@ var ApplicationAdapter = DS.Adapter.extend({
       // Set callback so when websocket responds, we can resolve this callback.
       adapter.get("callbacks")[uuid] = callback;
 
-      adapter.get("webSocket").send(JSON.stringify(payload));
+      // Only send the payload if the web socket connection is open.
+      if (adapter.get("webSocket").readystate === 1) {
+        adapter.get("webSocket").send(JSON.stringify(payload));
+      } else {
+        adapter.get("beforeOpenQueue").push(payload);
+      }
     });
   },
 
