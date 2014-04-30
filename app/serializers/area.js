@@ -7,9 +7,11 @@ var AreaSerializer = DS.RESTSerializer.extend({
   },
 
   extractArray: function(store, type, payload) {
+    var data = JSON.parse(payload.data);
+
     var recordsPayload = {
-      areas:    JSON.parse(payload.data.areas),
-      players:  JSON.parse(payload.data.players)
+      areas:    JSON.parse(data.areas),
+      players:  JSON.parse(data.players)
     }
 
     return this._super.apply(this, [store, type, recordsPayload]);
