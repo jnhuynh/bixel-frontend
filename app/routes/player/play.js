@@ -26,6 +26,32 @@ var PlayerPlayRoute = Ember.Route.extend({
       area.save().then(function() {
         this.transitionTo("player.show", player);
       }.bind(this));
+    },
+
+    move: function(direction) {
+      var player = this.controller.get("model"),
+          x      = player.get("x"),
+          y      = player.get("y");
+
+      switch (direction) {
+        case "up":
+          y -= 1;
+          break;
+        case "down":
+          y += 1;
+          break;
+        case "left":
+          x -= 1;
+          break;
+        case "right":
+          x += 1;
+          break;
+      }
+
+      player.set("x", x);
+      player.set("y", y);
+      player.set("eventName", "player/move");
+      player.save();
     }
   }
 });
