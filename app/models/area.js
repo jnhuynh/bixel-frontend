@@ -5,7 +5,11 @@ var attr      = DS.attr,
 var Area = DS.Model.extend({
   name:     attr("string"),
 
-  players:  hasMany("player")
+  players:  hasMany("player"),
+
+  // Used to signify what event the changes belong to so backend can act
+  // accordingly.
+  eventName: attr("string")
 });
 
 export default Area;
