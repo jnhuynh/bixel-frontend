@@ -86,7 +86,8 @@ var ApplicationAdapter = DS.Adapter.extend({
 
   createRecord: function(store, type, record) {
     console.log("ApplicationAdapter#createRecord");
-    var key     = record.constructor.typeKey,
+
+    var key     = type.typeKey,
         payload = {},
         eventName;
 

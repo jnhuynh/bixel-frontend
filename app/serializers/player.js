@@ -3,8 +3,9 @@ var PlayerSerializer = DS.RESTSerializer.extend({
     var modelPayload = JSON.parse(payload.data);
 
     return this._super.apply(this,
-      [store, type, modelPayload, modelPayload.player.id, requestType]);
+      [store, type, modelPayload, modelPayload[type.typeKey].id, requestType]);
   }
 });
 
 export default PlayerSerializer;
+
