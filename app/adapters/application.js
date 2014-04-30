@@ -23,6 +23,36 @@ var ApplicationAdapter = DS.Adapter.extend({
     return uri;
   }.property(),
 
+  webSocketEventHandler: function(payload) {
+    var eventName = payload.event_name,
+        data      = JSON.parse(payload.data);
+
+    // We need the store to push data from other clients.
+    // This should be moved into some stand alone "piece".
+    var store = this.container.lookup("store:main"),
+        serializer,
+        type,
+        recordPayload;
+
+    switch (eventName) {
+      case "area/player_enter":
+        console.log("player_enter");
+        break;
+      case "area/player_exit":
+        console.log("player_exit");
+        break;
+      case "player/move":
+        console.log("player_move");
+
+        type          = store.modelFor("player");
+        serializer    = store.serializerFor("player");
+        recordPayload = serializer.extractSingle(store, type, payload);
+
+        store.push(type, recordPayload);
+        break;
+    }
+  },
+
   onOpenHandler: function() {
     var adapter   = this;
 
@@ -51,6 +81,10 @@ var ApplicationAdapter = DS.Adapter.extend({
       if (callback) {
         callback.success(payload);
         delete callbacks[payload.uuid];
+      } else {
+        // No callback means that this originated for another user.
+        // Push the data into the store.
+        adapter.webSocketEventHandler(payload);
       }
     };
   }.property(),
