@@ -111,9 +111,7 @@ var ApplicationAdapter = DS.Adapter.extend({
     });
   },
 
-  createRecord: function(store, type, record) {
-    console.log("ApplicationAdapter#createRecord");
-
+  serializeForWebSocket: function(type, record) {
     var key     = type.typeKey,
         payload = {},
         eventName;
@@ -122,13 +120,25 @@ var ApplicationAdapter = DS.Adapter.extend({
     payload["event_name"] = payload[key].eventName;
     delete payload[key].eventName;
 
+    return payload;
+  },
+
+  createRecord: function(store, type, record) {
+    console.log("ApplicationAdapter#createRecord");
+
+    var payload = this.serializeForWebSocket(type, record);
+
     return this.send(payload);
   },
 
   updateRecord: function(store, type, record) {
     console.log("ApplicationAdapter#updateRecord");
 
-    return this.createRecord(store, type, record);
+    var payload = this.serializeForWebSocket(type, record);
+
+    payload[type.typeKey]["id"] = record.get("id");
+
+    return this.send(payload);
   },
 
   findAll: function(store, type, sinceToken) {
