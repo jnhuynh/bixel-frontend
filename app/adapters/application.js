@@ -48,8 +48,10 @@ var ApplicationAdapter = DS.Adapter.extend({
           payload   = JSON.parse(event.data),
           callback  = callbacks[payload.uuid];
 
-      callback.success(payload);
-      delete callbacks[payload.uuid];
+      if (callback) {
+        callback.success(payload);
+        delete callbacks[payload.uuid];
+      }
     };
   }.property(),
 
