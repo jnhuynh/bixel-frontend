@@ -1,15 +1,25 @@
 var AreaSerializer = DS.RESTSerializer.extend({
   extractSingle: function(store, type, payload, id, requestType) {
-    var modelPayload = JSON.parse(payload.data);
+    var recordPayload = JSON.parse(payload.data);
 
     return this._super.apply(this,
-      [store, type, modelPayload, modelPayload[type.typeKey].id, requestType]);
+      [store, type, recordPayload, recordPayload[type.typeKey].id, requestType]);
   },
 
   extractArray: function(store, type, payload) {
-    var modelsPayload = JSON.parse(payload.data.areas);
+    var recordsPayload = JSON.parse(payload.data.areas);
 
-    return modelsPayload;
+    return recordsPayload;
+  },
+
+  serialize: function(record, options) {
+    var recordPayload = this._super.apply(this, arguments);
+
+    recordPayload["players"] = record.get("players").map(function(player, index, players) {
+      return player.get("id");
+    });
+
+    return recordPayload;
   }
 });
 
