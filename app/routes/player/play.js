@@ -12,8 +12,21 @@ var PlayerPlayRoute = Ember.Route.extend({
     return player;
   },
 
-  setupController: function(model) {
+  setupController: function(controller, player) {
+    controller.set("model", player);
+  },
 
+  actions: {
+    exitArea: function(area) {
+      var player = this.controller.get("model");
+
+      area.get("players").removeObject(player);
+      area.set("eventName", "area/player_exit");
+
+      area.save().then(function() {
+        this.transitionTo("player.show", player);
+      }.bind(this));
+    }
   }
 });
 
