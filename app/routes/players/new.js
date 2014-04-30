@@ -1,4 +1,4 @@
-var PlayerNewRoute = Ember.Route.extend({
+var PlayersNewRoute = Ember.Route.extend({
   model: function() {
     return this.store.createRecord("player");
   },
@@ -14,11 +14,11 @@ var PlayerNewRoute = Ember.Route.extend({
 
       model.set("eventName", "player/create");
       model.save().then(function() {
-        this.transitionTo("area.index");
+        this.transitionTo("areas.index");
       }.bind(this));
     }
   }
 });
 
-export default PlayerNewRoute;
+export default PlayersNewRoute;
 

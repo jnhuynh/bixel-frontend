@@ -1,4 +1,4 @@
-var AreaIndexRoute = Ember.Route.extend({
+var AreasIndexRoute = Ember.Route.extend({
   model: function() {
     return this.store.find("area");
   },
@@ -8,5 +8,5 @@ var AreaIndexRoute = Ember.Route.extend({
   }
 });
 
-export default AreaIndexRoute;
+export default AreasIndexRoute;
 

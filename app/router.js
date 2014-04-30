@@ -4,11 +4,15 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.resource("player", function() {
+  this.resource("players", function() {
     this.route("new");
   });
 
-  this.resource("area", function() {
+  this.resource("player", { path: "player/:player_id" }, function() {
+    this.route("show");
+  });
+
+  this.resource("areas", function() {
   });
 
   this.route("play");
