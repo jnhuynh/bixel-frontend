@@ -29,7 +29,7 @@ var ApplicationAdapter = DS.Adapter.extend({
     return function(event) {
       // Web socket is open, we are safe to send the payloads.
       var beforeOpenQueue = adapter.get("beforeOpenQueue");
- 
+
       if(adapter.beforeOpenQueue.length > 0) {
         adapter.beforeOpenQueue.map(function(payload) {
           adapter.get("webSocket").send(JSON.stringify(payload));
@@ -38,7 +38,7 @@ var ApplicationAdapter = DS.Adapter.extend({
         adapter.set("beforeOpenQueue", []);
       }
     };
-  },
+  }.property(),
 
   onMessageHandler: function() {
     var adapter   = this;
