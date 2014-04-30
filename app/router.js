@@ -8,6 +8,10 @@ Router.map(function() {
     this.route("new");
   });
 
+  this.resource("area", function() {
+    this.route("index");
+  });
+
   this.route("play");
 });
 
