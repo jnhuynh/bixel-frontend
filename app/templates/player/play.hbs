@@ -1,1 +1,47 @@
 <h1>Play</h1>
+
+<button class="btn btn-primary" {{action exitArea area}}>
+  Exit {{area.name}}
+</button>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>X</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{id}}</td>
+      <td>{{name}}</td>
+      <td>{{x}}</td>
+      <td>{{y}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Other Players in Area</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>X</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each otherPlayer in otherPlayers}}
+      <tr>
+        <td>{{otherPlayer.id}}</td>
+        <td>{{otherPlayer.name}}</td>
+        <td>{{otherPlayer.x}}</td>
+        <td>{{otherPlayer.y}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
