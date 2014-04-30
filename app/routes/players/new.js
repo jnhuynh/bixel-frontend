@@ -9,13 +9,13 @@ var PlayersNewRoute = Ember.Route.extend({
 
   actions: {
     createPlayer: function() {
-      var model = this.controller.get("model");
+      var player = this.controller.get("model");
 
-      model.set("eventName", "player/create");
-      model.save().then(function() {
-        var model = this.controller.get("model");
+      player.set("eventName", "player/create");
+      player.save().then(function() {
+        var player = this.controller.get("model");
 
-        this.transitionTo("player.show", model);
+        this.transitionTo("player.show", player);
       }.bind(this));
     }
   }
