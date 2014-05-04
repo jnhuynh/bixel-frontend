@@ -6,21 +6,6 @@
   </button>
 </div>
 
-<div>
-  <button class="btn btn-default" {{action move "up"}}>
-    <span class="glyphicon glyphicon-chevron-up"></span>
-  </button>
-  <button class="btn btn-default" {{action move "down"}}>
-    <span class="glyphicon glyphicon-chevron-down"></span>
-  </button>
-  <button class="btn btn-default" {{action move "left"}}>
-    <span class="glyphicon glyphicon-chevron-left"></span>
-  </button>
-  <button class="btn btn-default" {{action move "right"}}>
-    <span class="glyphicon glyphicon-chevron-right"></span>
-  </button>
-</div>
-
 <table class="table table-striped">
   <thead>
     <tr>
@@ -62,3 +47,5 @@
     {{/each}}
   </tbody>
 </table>
+
+{{view "game" player=model}}

@@ -1,2 +1,5 @@
 <button {{action "move" target="view"}}>Move</button>
-{{view "game/render" game=view.game player=view.player}}
+
+{{view "game/render"
+  gameRenderer=view.gameRenderer
+  playerRenderEntity=view.playerRenderEntity}}

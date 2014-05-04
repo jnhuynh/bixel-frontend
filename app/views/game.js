@@ -1,15 +1,12 @@
 var GameView = Ember.View.extend({
-  game:          null,
-  player:        null,
-  templateName:  "game",
+  templateName:        "game",
+
+  player:              null,
+
+  gameRenderer:        null,
+  playerRenderEntity:  null,
 
   actions: {
-    move: function() {
-      var game   = this.get("game"),
-          player = this.get("player");
-
-          debugger;
-    }
   }
 });
 
