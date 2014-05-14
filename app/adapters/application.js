@@ -14,8 +14,8 @@ var ApplicationAdapter = DS.Adapter.extend({
         uri;
 
     // Temporary for development URI
-    if (window.ENV.developmentWebSocketHost) {
-      host = window.ENV.developmentWebSocketHost;
+    if (window.ENV.APP.developmentWebSocketHost) {
+      host = window.ENV.APP.developmentWebSocketHost;
     }
 
     uri = scheme + host + "/";
@@ -37,6 +37,7 @@ var ApplicationAdapter = DS.Adapter.extend({
     switch (eventName) {
       case "area/player_enter":
         console.log("player_enter");
+        /* falls through */
       case "area/player_exit":
         console.log("player_exit");
 
@@ -114,7 +115,7 @@ var ApplicationAdapter = DS.Adapter.extend({
     // http://stackoverflow.com/a/2117523
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
       var r = Math.random() * 16|0,
-          v = (c == "x") ? r : (r & 0x3|0x8);
+          v = (c === "x") ? r : (r & 0x3|0x8);
 
       return v.toString(16);
     });
@@ -201,7 +202,7 @@ var ApplicationAdapter = DS.Adapter.extend({
         eventName  = key + "/show";
 
     payload[key]          = {};
-    payload[key]["id"]    = id
+    payload[key]["id"]    = id;
     payload["event_name"] = eventName;
 
     return this.send(payload);

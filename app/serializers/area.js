@@ -12,7 +12,7 @@ var AreaSerializer = DS.RESTSerializer.extend({
     var recordsPayload = {
       areas:    JSON.parse(data.areas),
       players:  JSON.parse(data.players)
-    }
+    };
 
     return this._super.apply(this, [store, type, recordsPayload]);
   },
