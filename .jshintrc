@@ -9,7 +9,10 @@
     "DS": true,
     "$": true,
     "ENV": true,
-    "module": true
+    "module": true,
+    "WebSocket": true,
+    "Phaser": true,
+    "console": true
   },
   "node" : false,
   "browser" : false,
