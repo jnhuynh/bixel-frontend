@@ -20,15 +20,17 @@ var GameRenderView = Ember.View.extend({
   }.property(),
 
   didInsertElement: function() {
-    var element    = this.$(),
-        eventHooks = {
+    var element   = this.$(),
+        mainState = {
             preload: this.get("preload"),
             create: this.get("create"),
             update: this.get("update")
         };
 
     var gameRenderer = new Phaser.Game(800, 600, Phaser.AUTO,
-      element.attr("id"), eventHooks);
+      element.attr("id"));
+
+    gameRenderer.state.add(mainState);
 
     this.set("gameRenderer", gameRenderer);
   }
