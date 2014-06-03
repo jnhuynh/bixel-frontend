@@ -1,6 +1,5 @@
 var GameRenderView = Ember.View.extend({
   gameRendererRenderer:  null,
-  playerRenderEntity:    null,
 
   preload: function () {
     return function _preload() {
