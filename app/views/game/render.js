@@ -1,14 +1,15 @@
 var GameRenderView = Ember.View.extend({
   gameRenderer:  null,
-  upKey:         null,
-  downKey:       null,
-  leftKey:       null,
-  rightKey:      null,
-  wKey:          null,
-  sKey:          null,
-  aKey:          null,
-  dKey:          null,
 
+  upKey:     null,
+  downKey:   null,
+  leftKey:   null,
+  rightKey:  null,
+  wKey:      null,
+  sKey:      null,
+  aKey:      null,
+  dKey:      null,
+  jKey:      null,
 
   preload: function () {
     return function _preload() {
@@ -28,6 +29,7 @@ var GameRenderView = Ember.View.extend({
       player.animations.add('down', [4, 5, 6, 7], 10, true);
       player.animations.add('left', [8, 9, 10, 11], 10, true);
       player.animations.add('right', [12, 13, 14, 15], 10, true);
+      player.animations.add('attack', [12, 13, 14, 15], 10, true);
       gameRenderer.physics.enable(player, Phaser.Physics.ARCADE);
       this.set('player', player);
 
@@ -40,13 +42,32 @@ var GameRenderView = Ember.View.extend({
       this.set('sKey', gameRenderer.input.keyboard.addKey(Phaser.Keyboard.S));
       this.set('aKey', gameRenderer.input.keyboard.addKey(Phaser.Keyboard.A));
       this.set('dKey', gameRenderer.input.keyboard.addKey(Phaser.Keyboard.D));
+      this.set('dKey', gameRenderer.input.keyboard.addKey(Phaser.Keyboard.D));
+
+      this.set('jKey', gameRenderer.input.keyboard.addKey(Phaser.Keyboard.J));
     }.bind(this);
   }.property(),
+
+  updateAttack: function() {
+    return function _updateAttack() {
+      var gameRenderer = this.get('gameRenderer'),
+          player       = this.get('player'),
+          jKey         = this.get('jKey');
+
+      if (jKey.isDown) {
+        console.log('attack');
+        player.animations.play('attack');
+      }
+
+    }.bind(this);
+  },
 
   update: function () {
     return function _update() {
       var gameRenderer = this.get('gameRenderer'),
           player       = this.get('player'),
+          otherPlayers = [],
+          terrain      = [],
           leftKey      = this.get('leftKey'),
           rightKey     = this.get('rightKey'),
           upKey        = this.get('upKey'),
@@ -65,7 +86,7 @@ var GameRenderView = Ember.View.extend({
       } else if (rightKey.isDown || dKey.isDown) {
         player.body.velocity.x = 100;
         player.animations.play('right');
-      } else if (this.get('upKey').isDown || wKey.isDown) {
+      } else if (upKey.isDown || wKey.isDown) {
         player.body.velocity.y = -100;
         player.animations.play('up');
       } else if (downKey.isDown || sKey.isDown) {
@@ -74,6 +95,9 @@ var GameRenderView = Ember.View.extend({
       } else {
         player.animations.stop();
       }
+
+      gameRenderer.physics.arcade.collide(player, otherPlayers, this.get('updateAttack'));
+      gameRenderer.physics.arcade.collide(player, terrain, this.get('updateAttack'));
     }.bind(this);
   }.property(),
 
